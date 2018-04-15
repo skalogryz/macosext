@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="macosext"/>
+    <Type Value="RunAndDesignTime"/>
+    <Author Value="Dmitry 'skalogryz' Boyarintsev"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Description Value="macOS Extension - additional components and utilities to support macOS special features that are cannot be implemented via basic LCL"/>
+    <License Value="Modified LGPL as imposted by LCL"/>
+    <Version Major="1"/>
+    <Files Count="3">
+      <Item1>
+        <Filename Value="macosformprop.pas"/>
+        <AddToUsesPkgSection Value="False"/>
+        <UnitName Value="macOSFormProp"/>
+      </Item1>
+      <Item2>
+        <Filename Value="macosextres.lrs"/>
+        <Type Value="LRS"/>
+      </Item2>
+      <Item3>
+        <Filename Value="macosextreg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="macosextreg"/>
+      </Item3>
+    </Files>
+    <RequiredPkgs Count="4">
+      <Item1>
+        <PackageName Value="IDEIntf"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="DebuggerIntf"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="LCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+      </Item4>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>
