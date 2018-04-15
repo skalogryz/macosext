@@ -24,11 +24,14 @@ type
   TmacOSFormProp = class(TLCLComponent)
   private
     fAppearance : String;
+    fDocEdited: Boolean;
   protected
     procedure SetApparance(const AAppearance: String);
+    procedure SetDocEdited(ADocEdited: Boolean);
   published
     constructor Create(AOwner: TComponent); override;
     property Appearance: string read fAppearance write SetApparance;
+    property DocEdited: Boolean read fDocEdited write SetDocEdited;
   end;
 
 implementation
@@ -105,6 +108,19 @@ begin
   fAppearance := AAppearance;
   {$ifdef LCLCocoa}
   UpdateAppearance(Owner, AAppearance);
+  {$endif}
+end;
+
+procedure TmacOSFormProp.SetDocEdited(ADocEdited: Boolean);
+{$ifdef LCLCocoa}
+var
+  win : NSWindow;
+{$endif}
+begin
+  fDocEdited := ADocEdited;
+  {$ifdef LCLCocoa}
+  win := ComponentToNSWindow(Owner);
+  if Assigned(win) then win.setDocumentEdited(ADocEdited);
   {$endif}
 end;
 
