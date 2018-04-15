@@ -59,15 +59,6 @@ object Form1: TForm1
     PageSize = 0
     TabOrder = 5
   end
-  object Button2: TButton
-    Left = 24
-    Height = 25
-    Top = 240
-    Width = 75
-    Caption = 'Button2'
-    OnClick = Button2Click
-    TabOrder = 6
-  end
   object macOSFormProp1: TmacOSFormProp
     Appearance = 'NSAppearanceNameAqua'
     left = 256
