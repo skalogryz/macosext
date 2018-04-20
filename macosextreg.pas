@@ -24,8 +24,8 @@ type
 
 procedure Register;
 begin
-  RegisterComponents('macOS',[TmacOSFormProp]);
-  RegisterPropertyEditor( TypeInfo(String), TmacOSFormProp,
+  RegisterComponents('macOS',[TMacOSFormProp]);
+  RegisterPropertyEditor( TypeInfo(String), TMacOSFormProp,
     'Appearance', TAppearancePropEditor);
 end;
 

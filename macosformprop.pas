@@ -19,9 +19,9 @@ const
 
 type
 
-  { TmacOSFormProp }
+  { TMacOSFormProp }
 
-  TmacOSFormProp = class(TLCLComponent)
+  TMacOSFormProp = class(TLCLComponent)
   private
     fAppearance : String;
     fDocEdited: Boolean;
@@ -36,7 +36,7 @@ type
 
 implementation
 
-{ TmacOSFormProp }
+{ TMacOSFormProp }
 
 {$ifdef LCLCocoa}
 // https://developer.apple.com/documentation/appkit/nsappearance?language=objc
@@ -44,11 +44,6 @@ implementation
 // NSAppearanceNameLightContent (deprecated)
 // NSAppearanceNameVibrantDark
 // NSAppearanceNameVibrantLight
-
-const
-  _SEL_AN: SEL = nil;
-  _SEL_W:  SEL = nil;
-  _SEL_SA: SEL = nil;
 
 function ComponentToNSWindow(Owner: TComponent): NSWindow;
 var
@@ -60,10 +55,8 @@ begin
   obj := NSObject(TWinControl(Owner).Handle);
   if not Assigned(obj) then Exit;
 
-  if not Assigned(_SEL_W) then
-    _SEL_W := NSSelectorFromString(NSSTR('window'));
-  if obj.respondsToSelector(_SEL_W) then
-    Result := objc_msgSend(obj, _SEL_W);
+  if obj.respondsToSelector(ObjCSelector('window')) then
+    Result := objc_msgSend(obj, ObjCSelector('window'));
 end;
 
 function UpdateAppearance(Owner: TComponent; const AAppearance: String): Boolean;
@@ -85,24 +78,18 @@ begin
   cls := NSClassFromString( NSSTR('NSAppearance'));
   if not Assigned(cls) then Exit; // not suppored in OSX version
 
-  if not Assigned(_SEL_AN) then
-    _SEL_AN := NSSelectorFromString(NSSTR('appearanceNamed:'));
-
-  apr := objc_msgSend(cls, _SEL_AN, NSSTR(@ap[1]));
+  apr := objc_msgSend(cls, ObjCSelector('appearanceNamed:'), NSSTR(@ap[1]));
   if not Assigned(apr) then Exit;
 
-  if not Assigned(_SEL_SA) then
-    _SEL_SA := NSSelectorFromString(NSSTR('setAppearance:'));
-
-  if win.respondsToSelector(_SEL_SA) then
+  if win.respondsToSelector(ObjCSelector('setAppearance:')) then
   begin
-    objc_msgSend(win, _SEL_SA, apr);
+    objc_msgSend(win, ObjCSelector('setAppearance:'), apr);
     Result := true;
   end;
 end;
 {$endif}
 
-procedure TmacOSFormProp.SetApparance(const AAppearance: String);
+procedure TMacOSFormProp.SetApparance(const AAppearance: String);
 begin
   if fAppearance = AAppearance then Exit;
   fAppearance := AAppearance;
@@ -111,7 +98,7 @@ begin
   {$endif}
 end;
 
-procedure TmacOSFormProp.SetDocEdited(ADocEdited: Boolean);
+procedure TMacOSFormProp.SetDocEdited(ADocEdited: Boolean);
 {$ifdef LCLCocoa}
 var
   win : NSWindow;
@@ -124,7 +111,7 @@ begin
   {$endif}
 end;
 
-constructor TmacOSFormProp.Create(AOwner: TComponent);
+constructor TMacOSFormProp.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   fAppearance := 'NSAppearanceNameAqua';
