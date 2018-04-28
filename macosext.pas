@@ -8,7 +8,7 @@ unit macosext;
 interface
 
 uses
-  macosextreg, LazarusPackageIntf;
+  macosextreg, MacOSAppMenu, macosuiproc, LazarusPackageIntf;
 
 implementation
 

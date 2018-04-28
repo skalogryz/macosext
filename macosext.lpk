@@ -13,7 +13,7 @@
     <Description Value="macOS Extension - additional components and utilities to support macOS special features that are cannot be implemented via basic LCL"/>
     <License Value="Modified LGPL as imposted by LCL"/>
     <Version Major="1"/>
-    <Files Count="3">
+    <Files Count="5">
       <Item1>
         <Filename Value="macosformprop.pas"/>
         <AddToUsesPkgSection Value="False"/>
@@ -28,6 +28,16 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="macosextreg"/>
       </Item3>
+      <Item4>
+        <Filename Value="macosappmenu.pas"/>
+        <AddToUsesPkgSection Value="False"/>
+        <UnitName Value="MacOSAppMenu"/>
+      </Item4>
+      <Item5>
+        <Filename Value="macosuiproc.pas"/>
+        <AddToUsesPkgSection Value="False"/>
+        <UnitName Value="macosuiproc"/>
+      </Item5>
     </Files>
     <RequiredPkgs Count="4">
       <Item1>
