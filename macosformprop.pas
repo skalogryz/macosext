@@ -1,4 +1,4 @@
-unit macOSFormProp;
+unit MacOSFormProp;
 
 {$mode delphi}{$H+}
 {$ifdef LCLCocoa}
@@ -28,8 +28,9 @@ type
   protected
     procedure SetApparance(const AAppearance: String);
     procedure SetDocEdited(ADocEdited: Boolean);
-  published
+  public
     constructor Create(AOwner: TComponent); override;
+  published
     property Appearance: string read fAppearance write SetApparance;
     property DocEdited: Boolean read fDocEdited write SetDocEdited;
   end;
