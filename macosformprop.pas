@@ -4,7 +4,6 @@ unit MacOSFormProp;
 {$ifdef LCLCocoa}
 {$modeswitch objectivec1}
 {$endif}
-
 interface
 
 uses
@@ -16,6 +15,7 @@ const
   DefaultAppearance = macOSNSAppearanceNameAqua;
   macOSNSAppearanceNameVibrantDark = 'NSAppearanceNameVibrantDark';
   macOSNSAppearanceNameVibrantLight = 'NSAppearanceNameVibrantLight';
+  macOSNSAppearanceNameDarkAqua = 'NSAppearanceNameDarkAqua';
 
 type
 
@@ -56,16 +56,30 @@ begin
   obj := NSObject(TWinControl(Owner).Handle);
   if not Assigned(obj) then Exit;
 
-  if obj.respondsToSelector(ObjCSelector('window')) then
-    Result := objc_msgSend(obj, ObjCSelector('window'));
+  if obj.isKindOfClass(NSView) then
+    Result := NSView(obj).window;
 end;
+
+type
+  NSAppearanceInt = NSObject; // declare as alias, rather than a subclass
+
+  NSAppearanceWin = objccategory external (NSResponder)
+    procedure setAppearance(app: NSAppearanceInt); message 'setAppearance:';
+  end;
+
+  NSAppearanceCat = objccategory external (NSAppearanceInt)
+    class function appearanceNamed(app: NSObject): NSAppearanceInt; message 'appearanceNamed:';
+  end;
+
+type
+  NSAppearanceClass = class of NSAppearanceInt;
 
 function UpdateAppearance(Owner: TComponent; const AAppearance: String): Boolean;
 var
-  cls : id;
-  ap  : string;
+  cls : NSAppearanceClass;
   apr : id;
   win : NSWindow;
+  nm  : NSString;
 begin
   Result := false;
 
@@ -73,20 +87,25 @@ begin
   if not Assigned(win) then Exit;
 
   if AAppearance = ''
-    then ap := DefaultAppearance
-    else ap := AAppearance;
+    then nm := NSSTR(DefaultAppearance) // it's constant
+    else nm := NSString.stringWithUTF8String(@AAppearance[1]);
 
-  cls := NSClassFromString( NSSTR('NSAppearance'));
+  cls := NSAppearanceClass(NSClassFromString(NSSTR('NSAppearance')));
   if not Assigned(cls) then Exit; // not suppored in OSX version
 
-  apr := objc_msgSend(cls, ObjCSelector('appearanceNamed:'), NSSTR(@ap[1]));
-  if not Assigned(apr) then Exit;
+  // respondesToSelector returns if a class can respond to class methods!
+  // BUT, "respondesToSelector" is actually an instance method.
+  // in order to get "class instance object" (rather than "instance of a class")
+  // once should get cls.classClass object, cast it NSObject and call respondsToSelector
+  // from it
+  if NSObject(cls.classClass).respondsToSelector(ObjCSelector('appearanceNamed:')) then
+    apr := cls.appearanceNamed(nm)
+  else
+    apr := nil;
 
-  if win.respondsToSelector(ObjCSelector('setAppearance:')) then
-  begin
-    objc_msgSend(win, ObjCSelector('setAppearance:'), apr);
-    Result := true;
-  end;
+  if not Assigned(apr) then Exit;
+  win.setAppearance(apr);
+  Result := true;
 end;
 {$endif}
 
